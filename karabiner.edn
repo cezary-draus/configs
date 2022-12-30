@@ -1,0 +1,156 @@
+{
+ ;; rule [:period ["media-mode" 1] nil {:afterup ["media-mode" 0] :alone :period}]
+ ;;       |_____| |_______________| |_| |_________________________________________|
+ ;;        <from>    <to>      <conditions>         <other options>
+
+ ;; :japanese_kana {:label "かなキー" :display true}
+ ;; https://github.com/yqrashawn/GokuRakuJoudo/blob/master/src/karabiner_configurator/keys_info.clj
+
+ ;; chrome-mode
+ ;; https://github.com/LcitsChan/dotfiles/blob/01c8ef75147cb67302824772004a51486eccbffb/goku/karabiner.edn
+
+ ;; this is a little bit weird, but it's convenient
+ ;; the rule [:!Ca :!T1]
+ ;; means from command a to control 1
+ ;; :!Ca is keycode :a and prefix a with !C
+
+ ;; here's the definition
+
+ ;; !  | means mandatory
+ ;; #  | means optional
+ ;; C  | left_command
+ ;; T  | left_control
+ ;; O  | left_option
+ ;; S  | left_shift
+ ;; F  | fn
+ ;; Q  | right_command
+ ;; W  | right_control
+ ;; E  | right_option
+ ;; R  | right_shift
+ ;; P  | caps_lock
+ ;; !! | mandatory command + control + optional + shift (hyper)
+ ;; ## | optional any
+
+ ;; examples
+
+ ;; !CTSequal_sign  | mandatory command control shift =
+ ;;                 | which is command control +
+ ;; !O#Sright_arrow | mandatory option optional any right_arrow
+
+ ;; karabiner definition of mandatory and optional
+ ;; https://karabiner-elements.pqrs.org/docs/json/complex-modifications-manipulator-definition/from/modifiers/
+
+ ;; rule [<from> <to>]
+ ;; if simplified modifier is used in <to>, optional(#) definition will be
+ ;; ignored.
+
+ :applications {
+    :chrome ["^com\\.google\\.Chrome$"]
+    :slack ["^com\\.tinyspeck\\.slackmacgap$"]
+    :iterm ["^com.googlecode.iterm2$"]
+}
+ :templates {
+             :open "open -a '%s'"                                ;; :open "Safari"
+             :openApp "open \"%s\""                              ;; :open "/Applications/Safari.app"
+            :yabai "/opt/homebrew/bin/yabai -m %s"                              ;; :open "/Applications/Safari.app"
+             :yabai2 "/opt/homebrew/bin/yabai -m %s; /opt/homebrew/bin/yabai -m %s"                              ;; :open "/Applications/Safari.app"
+             }
+
+ :layers {
+            :hyper-mode {
+                         :key :caps_lock :alone {:key :caps_lock}
+                         }
+}
+ :simlayers {
+       :d-mode {:key :d}
+ }
+ :main [
+        {
+         :des "easier polish signs"
+         :rules [
+                 [:right_command :right_option]
+                 [:right_option :right_command]
+
+                 ]
+         },
+        {
+         :des "hyper-mode"
+         :rules [
+                 :hyper-mode
+                 ;;[:##h :left_arrow]
+                 ;;[:##j :down_arrow]
+                 ;;[:##k :up_arrow]
+                 ;;[:##l :right_arrow]
+                 ;;[:##f :left_option]
+                 ;;[:##d :left_shift]
+                 [:i [:open "IntelliJ IDEA Ultimate"]]
+                 [:p [:open "PyCharm Professional Edition"]]
+                 [:b [:open "Google Chrome"]]
+                 [:s [:open "Slack"]]
+                 [:f [:open "Finder"]]
+                 [:t [:open "iterm"]]
+                 [:y [:open "Microsoft Teams"]]
+
+
+                 [:right_arrow :!CSTOright_arrow]
+                 [:left_arrow :!CSTOleft_arrow]
+                 [:m [:yabai "space --focus 1"]]
+                 [:a :left_option]
+
+                 [:1 [:yabai "display --focus 2"]]
+                 [:2 [:yabai "display --focus 1"]]
+                 [:!Oleft_arrow [:yabai2 "window --display 2" "display --focus 2"]]
+                 [:!Oright_arrow [:yabai2 "window --display 1" "display --focus 1"]]
+                 [:!Oreturn_or_enter [:yabai "window --grid 1:1:0:0:1:1"]]
+                 [:!Cleft_arrow [:yabai "window --grid 1:2:0:0:1:1"]]
+                 [:!Cright_arrow [:yabai "window --grid 1:2:1:0:1:1"]]
+
+                 ]
+         },
+        {
+         :des "chrome overrides"
+         :rules [
+                 :chrome
+                 [:!Te :!CSa]
+                 [:!TSf :slash] ;; search
+                 [:!CSleft_arrow :!Tpage_up] ;; tab leftaa
+                 [:!CSright_arrow :!Tpage_down] ;; tab right
+                 ;;[:p "open ~/Applications/JetBrains\\ Toolbox/PyCharm\\ Professional\\ Edition.app"]
+
+                 ]
+         },
+         {
+         :des "slack overrides"
+         :rules [
+                 :slack
+                 [:!CTleft_arrow :!Copen_bracket] ;; history back
+                 [:!CTright_arrow :!Cclose_bracket] ;; history forward
+                 [:!TSf :!Cg] ;; search
+                 ;;[:p "open ~/Applications/JetBrains\\ Toolbox/PyCharm\\ Professional\\ Edition.app"]
+
+                 ]
+         },
+        {
+         :des "iterm"
+         :rules [
+                 :iterm
+                 [:!COleft_arrow :!Cleft_arrow] ;; tab left
+                 [:!COright_arrow :!Cright_arrow] ;; tab right
+                 ;;[:p "open ~/Applications/JetBrains\\ Toolbox/PyCharm\\ Professional\\ Edition.app"]
+
+                 ]
+         },
+        {
+         :des "mouse"
+         :rules [
+                 :d-mode
+                 [:i :!Ckeypad_hyphen] ; Zoom out
+                 [:o :!Ckeypad_plus] ; Zoom inT
+                 [:j {:mkey {:vwheel 60}}] ; Scroll down
+                 [:k {:mkey {:vwheel -60}}] ; Scroll up
+
+                 ]
+         }
+
+        ]}
+
